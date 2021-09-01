@@ -1,29 +1,26 @@
 #include<string>
 #include<iostream>
+#include <stdio.h>
+#include <dirent.h>
+#include <sys/types.h>
 
-// #include "OpenHashTable.h"
-// #include "LinkedList.h"
-#include "AVLTree.h"
+// #include "utils.h"
+#include "WordCounter.h"
 
 using namespace std;
 
+
 int main() {
 
-  AVLTree root;
+  // list_dir("folder");
+  WordCounter a;
+  // string a = "aaad", b = "aacd";
 
-  root.insert(1);
-  root.insert(2);
-  root.insert(3);
-  root.insert(4);
-  root.insert(5);
-
-  root.print();
-
-  printf("\n");
-
-  // root.search(5);
-
-
+  // if (a < b) {
+  //   cout << "a vem primeiro" << endl;
+  // } else {
+  //   cout << "b vem primeiro" << endl;
+  // }
 
   return 0;
 }
