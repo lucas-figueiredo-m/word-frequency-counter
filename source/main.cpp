@@ -6,6 +6,7 @@
 
 // #include "utils.h"
 #include "WordCounter.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -13,7 +14,10 @@ using namespace std;
 int main() {
 
   // list_dir("folder");
-  WordCounter a;
+  string filePath;
+  filePath = getFilePath();
+  WordCounter Counter(filePath);
+
   // string a = "aaad", b = "aacd";
 
   // if (a < b) {

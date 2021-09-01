@@ -9,16 +9,18 @@
   #include <stdio.h>
   #include <dirent.h>
   #include <sys/types.h>
+  #include "utils.h"
+  #include <sstream>
 
   using namespace std;
 
   class WordCounter {
 
     public:
-      WordCounter();
+      WordCounter(string filePath);
 
     private:
-      void OpenFile();
+      void OpenFile(string filePath);
   };
 
 #endif
