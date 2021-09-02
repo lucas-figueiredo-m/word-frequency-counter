@@ -9,10 +9,50 @@
   #include <stdio.h>
   #include <dirent.h>
   #include <sys/types.h>
+  #include <iomanip>
+  #include <functional>
+  #include <unordered_set>
   using namespace std;
+
+  typedef struct HeapNode_t {
+    int prio;
+    string info;
+  } HeapNode_t;
+
+  typedef struct HashNode_t {
+    HashNode_t *next;
+    uint count;
+    string info;
+  } HashNode_t;
 
   void OpenFile(string fileName);
 
   string getFilePath();
+
+  class Hashlist {
+
+    public:
+      Hashlist(uint m);
+      void Insert(string word);
+      void Print();
+
+    private:
+      uint length;
+      uint wordCount;
+      HashNode_t **table;
+      uint hashString(string k);
+  };
+
+  
+
+  class Heap {
+
+    HeapNode_t *root;
+
+    public:
+      Heap();
+      void Insert();
+
+  };
 
 #endif

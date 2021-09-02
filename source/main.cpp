@@ -18,13 +18,6 @@ int main() {
   filePath = getFilePath();
   WordCounter Counter(filePath);
 
-  // string a = "aaad", b = "aacd";
-
-  // if (a < b) {
-  //   cout << "a vem primeiro" << endl;
-  // } else {
-  //   cout << "b vem primeiro" << endl;
-  // }
 
   return 0;
 }

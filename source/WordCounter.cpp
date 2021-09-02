@@ -20,29 +20,50 @@ static void list_dir(const char *path) {
 void WordCounter::OpenFile(string fileName) {
   string line, word, subs;
   fstream file;
-  int i;
-  static string eraseMap(".:;,?!/-_\\");
+  int i, j = 0;
+  int count1 = 0, count2 = 0, count3 = 0;
+  static string eraseMap(".:;,?!/-_\\()[]{}=\"*#\n\r ");
+
+  Hashlist hash(37);
 
   file.open(fileName);
 
-  cout << "Aqui" << endl;
-
   if (file.is_open()) {
-    while (getline(file, line) ) {
-      istringstream stream(line);
+    while (getline(file, line)) {
+      stringstream stream(line);
+      j+=1;
 
-      while (stream) {
+      if (line.length() > 0 && line != " ") {
         stream >> subs;
-        for (i = 0; i < eraseMap.length(); i++) {
-          subs.erase(remove(subs.begin(), subs.end(), eraseMap.at(i)), subs.end());
+        cout << line << endl;
+        while (stream) {
+          for (i = 0; i < eraseMap.length(); i++) 
+            subs.erase(remove(subs.begin(), subs.end(), eraseMap.at(i)), subs.end());
+          
+          // cout << "Substring: " << subs << "\tLength: " << subs.length() << endl;
+          count1 += 1;
+          if (subs.length() > 0 && subs != " " && subs.at(0) != ' ' ) {
+            count2 += 1;
+            cout << subs << "\tLength: " << subs.length() << endl; 
+            hash.Insert(subs);
+          } else {
+            count3 += 1;
+          }
+          stream >> subs;
         }
-        cout << "Substring: " << subs << endl;
+        // cout << "\n\n" << endl;
       }
+
       // cout << line << "\n";
     }
 
     file.close();
   }
+
+  hash.Print();
+  cout << "\n\nCount 1: " << count1 << endl;
+  cout << "Count 2: " << count2 << endl;
+  cout << "Count 3: " << count3 << endl;
 }
 
 WordCounter::WordCounter(string filePath) {
@@ -52,7 +73,6 @@ WordCounter::WordCounter(string filePath) {
   if ( !pathEnding.compare(".txt") ) { 
     cout << "file" << endl;
     WordCounter::OpenFile(filePath);
-    cout << "Puta merda" << endl;
   } else
     cout << "folder" << endl;
   

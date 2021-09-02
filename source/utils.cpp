@@ -59,3 +59,71 @@ string getFilePath() {
 
   return dir;
 }
+
+Hashlist::Hashlist(uint m) {
+  length = m;
+  wordCount = 0;
+  table = (HashNode_t **) malloc(m * sizeof(HashNode_t));
+}
+
+uint Hashlist::hashString (string k) {
+  hash<string> h1;
+  size_t h = h1(k);
+  return (uint) (h % length);
+}
+
+void Hashlist::Insert(string word) {
+  cout << 1 << endl;
+  uint h = hashString( word );
+  cout << 2 << endl;
+
+  HashNode_t *newNode = (HashNode_t *) malloc( sizeof(HashNode_t) );
+  cout << 3 << endl;
+  newNode->count = 1;
+  cout << "4" << endl;
+  int i;
+  for (i = 0; i < word.length(); i++)
+    printf("\t%d\n", word.at(i));
+
+  cout << 4.1 << endl;  
+  newNode->info = (string) word;
+  cout << 5 << endl;
+  
+  if ( table[h] == nullptr) {
+    newNode->next = nullptr;
+    table[h] = newNode;
+    wordCount += 1;
+  } else{
+    HashNode_t *node = table[h];
+    while (node != nullptr) {
+      if (node->info == newNode->info){
+        node->count += 1;
+        break;
+      } 
+      node = node->next;
+    }
+
+    if (node == nullptr) {
+      newNode->next = table[h];
+      table[h] = newNode;
+      wordCount += 1;
+    }
+  }
+}
+
+void Hashlist::Print() {
+  uint i;
+  HashNode_t *aux;
+  for (i = 0; i < length; i++) {
+    printf("[%d] -> ", i);
+    aux = table[i];
+
+    while (aux != nullptr) {
+      printf("%s(%d) ->  ", aux->info.c_str(), aux->count);
+      aux = aux->next;
+    }
+
+    printf("NULL\n");
+  }
+  printf("\nWords: %d\n", wordCount);
+}
