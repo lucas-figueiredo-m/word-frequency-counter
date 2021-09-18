@@ -73,27 +73,18 @@ uint Hashlist::hashString (string k) {
 }
 
 void Hashlist::Insert(string word) {
-  cout << 1 << endl;
   uint h = hashString( word );
-  cout << 2 << endl;
 
-  HashNode_t *newNode = (HashNode_t *) malloc( sizeof(HashNode_t) );
-  cout << 3 << endl;
+  HashNode_t *newNode = (HashNode_t *) malloc( 4*sizeof(HashNode_t) );
   newNode->count = 1;
-  cout << "4" << endl;
-  int i;
-  for (i = 0; i < word.length(); i++)
-    printf("\t%d\n", word.at(i));
-
-  cout << 4.1 << endl;  
-  newNode->info = (string) word;
-  cout << 5 << endl;
+   
+  newNode->info.assign( word );
   
   if ( table[h] == nullptr) {
     newNode->next = nullptr;
     table[h] = newNode;
     wordCount += 1;
-  } else{
+  } else {
     HashNode_t *node = table[h];
     while (node != nullptr) {
       if (node->info == newNode->info){

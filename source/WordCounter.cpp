@@ -20,61 +20,87 @@ static void list_dir(const char *path) {
 void WordCounter::OpenFile(string fileName) {
   string line, word, subs;
   fstream file;
-  int i, j = 0;
-  int count1 = 0, count2 = 0, count3 = 0;
-  static string eraseMap(".:;,?!/-_\\()[]{}=\"*#\n\r ");
+  u_long i;
+  static string eraseMap(".:;,?!/-_\\()[]{}=\"*#\n\r\0r");
+  int num;
 
   Hashlist hash(37);
 
   file.open(fileName);
 
-  if (file.is_open()) {
-    while (getline(file, line)) {
-      stringstream stream(line);
-      j+=1;
+  if ( file.is_open() ) {
+    while ( getline(file, line) ) {
 
-      if (line.length() > 0 && line != " ") {
+      stringstream stream(line);
+      
+      cout << line << endl;
+
+      for (i = 0; i < eraseMap.length(); i++) 
+        line.erase(remove(line.begin(), line.end(), eraseMap.at(i)), line.end());
+
+      cout << line << endl;
+
+      if ( line.length() > 0 && line != " " && line != "" ) {
         stream >> subs;
-        cout << line << endl;
+
         while (stream) {
+
           for (i = 0; i < eraseMap.length(); i++) 
             subs.erase(remove(subs.begin(), subs.end(), eraseMap.at(i)), subs.end());
-          
-          // cout << "Substring: " << subs << "\tLength: " << subs.length() << endl;
-          count1 += 1;
-          if (subs.length() > 0 && subs != " " && subs.at(0) != ' ' ) {
-            count2 += 1;
-            cout << subs << "\tLength: " << subs.length() << endl; 
-            hash.Insert(subs);
-          } else {
-            count3 += 1;
-          }
+          cout << subs << endl;
+          hash.Insert(subs);
           stream >> subs;
         }
-        // cout << "\n\n" << endl;
       }
-
-      // cout << line << "\n";
     }
 
-    file.close();
+    hash.Print();
   }
-
-  hash.Print();
-  cout << "\n\nCount 1: " << count1 << endl;
-  cout << "Count 2: " << count2 << endl;
-  cout << "Count 3: " << count3 << endl;
 }
+
+// void WordCounter::OpenFile(string fileName) {
+//   string line, word, subs;
+//   fstream file;
+//   u_long i;
+//   static string eraseMap(".:;,?!/-_\\()[]{}=\"*#\n\r ");
+//   int num;
+
+//   Hashlist hash(37);
+
+//   file.open(fileName);
+
+//   if (file.is_open()) {
+//     while ( getline(file, line) ) {
+//       stringstream stream(line);
+
+//       if (line.length() > 0 && line != " ") {
+//         stream >> subs;
+//         cout << line << endl;
+//         while (stream) {
+//           for (i = 0; i < eraseMap.length(); i++) 
+//             subs.erase(remove(subs.begin(), subs.end(), eraseMap.at(i)), subs.end());
+          
+//           if (subs.length() > 0 && subs != " " && subs.at(0) != ' ' ) {
+//             cout << subs << "\tLength: " << subs.length() << endl; 
+//             hash.Insert(subs);
+//           }
+//           stream >> subs;
+//         }
+//       }
+//     }
+
+//     file.close();
+//   }
+
+//   hash.Print();
+// }
 
 WordCounter::WordCounter(string filePath) {
 
   string pathEnding = filePath.substr( filePath.length() - 4 );
 
-  if ( !pathEnding.compare(".txt") ) { 
-    cout << "file" << endl;
+  if ( !pathEnding.compare(".txt") ) {
     WordCounter::OpenFile(filePath);
   } else
     cout << "folder" << endl;
-  
-
 }

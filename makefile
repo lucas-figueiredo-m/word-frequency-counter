@@ -20,6 +20,7 @@ CC_FLAGS=-c         \
          -W         \
          -Wall      \
          -ansi      \
+				 -g         \
          -pedantic
  
 # Command used at clean target
