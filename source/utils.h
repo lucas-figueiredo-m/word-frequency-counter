@@ -21,6 +21,7 @@
 
   typedef struct HashNode_t {
     HashNode_t *next;
+    HashNode_t *prev;
     uint count;
     string info;
   } HashNode_t;
@@ -35,24 +36,15 @@
       Hashlist(uint m);
       void Insert(string word);
       void Print();
+      int unrepeatedWords;
+      int totalWords;
 
     private:
       uint length;
-      uint wordCount;
       HashNode_t **table;
       uint hashString(string k);
   };
 
-  
 
-  class Heap {
-
-    HeapNode_t *root;
-
-    public:
-      Heap();
-      void Insert();
-
-  };
 
 #endif

@@ -22,17 +22,13 @@ int main() {
   // cout << filePath << endl;
   WordCounter Counter(filePath);
 
-  // Hashlist hashlist(20);
-  // hashlist.Insert("Lorem");
-  // hashlist.Insert("Ipsum");
-  // hashlist.Insert("Lorem");
-  // hashlist.Insert("Lorem");
-  // hashlist.Insert("Lorem");
-  // hashlist.Insert("sit");
-  // hashlist.Insert("sit");
-  // hashlist.Insert("dolor");
-  // hashlist.Insert("amet");
-  // hashlist.Print();
+
+  // fstream file;
+  // file.open("teste.csv", ios::out | ios::trunc);
+  // file << "1,2,3" << "\n";
+  // file << "4,5,6" << "\n";
+  // file << "7,8,9" << "\n";
+  // file.close();
 
 
   return 0;

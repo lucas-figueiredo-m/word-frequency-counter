@@ -62,7 +62,8 @@ string getFilePath() {
 
 Hashlist::Hashlist(uint m) {
   length = m;
-  wordCount = 0;
+  unrepeatedWords = 0;
+  totalWords = 0;
   table = (HashNode_t **) malloc(m * sizeof(HashNode_t));
 }
 
@@ -79,11 +80,12 @@ void Hashlist::Insert(string word) {
   newNode->count = 1;
    
   newNode->info.assign( word );
+  totalWords += 1;
   
   if ( table[h] == nullptr) {
     newNode->next = nullptr;
     table[h] = newNode;
-    wordCount += 1;
+    unrepeatedWords += 1;
   } else {
     HashNode_t *node = table[h];
     while (node != nullptr) {
@@ -97,7 +99,7 @@ void Hashlist::Insert(string word) {
     if (node == nullptr) {
       newNode->next = table[h];
       table[h] = newNode;
-      wordCount += 1;
+      unrepeatedWords += 1;
     }
   }
 }
@@ -116,5 +118,5 @@ void Hashlist::Print() {
 
     printf("NULL\n");
   }
-  printf("\nWords: %d\n", wordCount);
+  printf("\nWords: %d\n", unrepeatedWords);
 }
