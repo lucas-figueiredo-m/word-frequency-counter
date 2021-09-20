@@ -18,10 +18,9 @@ void Hashlist::Insert(string word) {
 
   HashNode_t *newNode = (HashNode_t *) malloc( 4*sizeof(HashNode_t) );
   newNode->count = 1;
-   
   newNode->info.assign( word );
   totalWords += 1;
-  
+
   if ( table[h] == nullptr) {
     newNode->next = nullptr;
     table[h] = newNode;

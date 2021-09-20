@@ -12,6 +12,7 @@
   #include "utils.h"
   #include "heap.h"
   #include "hashlist.h"
+  #include "trie.h"
   #include <sstream>
 
   using namespace std;
@@ -21,14 +22,19 @@
     public:
       WordCounter(string filePath);
       void InsertListTime();
+      Hashlist *list;
+      Trie *tr;
 
     private:
       void OpenFile(string filePath);
-      void InsertIntoList(string filepath);
+      void InsertIntoStructure(string filepath, void (WordCounter::*)(string insertWord));
       void InsertIntoTrie(string filepath);
 
+      void InsertIntoList (string word);
 
-      Hashlist *list;
+      void (WordCounter::*InsertFn) (string word);
+
+
   };
 
 #endif
