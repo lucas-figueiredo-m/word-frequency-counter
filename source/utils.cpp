@@ -60,63 +60,49 @@ string getFilePath() {
   return dir;
 }
 
-Hashlist::Hashlist(uint m) {
-  length = m;
-  unrepeatedWords = 0;
-  totalWords = 0;
-  table = (HashNode_t **) malloc(m * sizeof(HashNode_t));
-}
-
-uint Hashlist::hashString (string k) {
-  hash<string> h1;
-  size_t h = h1(k);
-  return (uint) (h % length);
-}
-
-void Hashlist::Insert(string word) {
-  uint h = hashString( word );
-
-  HashNode_t *newNode = (HashNode_t *) malloc( 4*sizeof(HashNode_t) );
-  newNode->count = 1;
-   
-  newNode->info.assign( word );
-  totalWords += 1;
+static void list_dir(const char *path) {
+  cout << path << endl;
+  struct dirent *entry;
+  DIR *dir = opendir(path);
+  if (dir == NULL)
+    return;
   
-  if ( table[h] == nullptr) {
-    newNode->next = nullptr;
-    table[h] = newNode;
-    unrepeatedWords += 1;
-  } else {
-    HashNode_t *node = table[h];
-    while (node != nullptr) {
-      if (node->info == newNode->info){
-        node->count += 1;
-        break;
-      } 
-      node = node->next;
-    }
-
-    if (node == nullptr) {
-      newNode->next = table[h];
-      table[h] = newNode;
-      unrepeatedWords += 1;
-    }
+  while ((entry = readdir(dir)) != NULL) {
+    string file(entry->d_name);
+    if (file.at(0) != '.')
+      cout << file << endl;
   }
+
+  closedir(dir);
 }
 
-void Hashlist::Print() {
-  uint i;
-  HashNode_t *aux;
-  for (i = 0; i < length; i++) {
-    printf("[%d] -> ", i);
-    aux = table[i];
+void InsertTimeSpent(string csvTitle, string csvHeader, void (*InsertFunction) (string fileName), int storageUse) {
+  struct dirent *entry;
+  string folder("folder/"), filePath;
+  DIR *dir = opendir(folder.c_str());
+  if (dir == NULL)
+    return;
+  
+  fstream csvFile;
 
-    while (aux != nullptr) {
-      printf("%s(%d) ->  ", aux->info.c_str(), aux->count);
-      aux = aux->next;
+  csvFile.open(csvTitle, ios::out | ios::trunc);
+  csvFile << csvHeader << "\n";
+  const clock_t begin_time = clock();
+  float time_spent;
+
+  while ((entry = readdir(dir)) != NULL) {
+    string file(entry->d_name);
+    if (file.at(0) != '.') {
+      cout << file << endl;
+      filePath.assign(folder);
+      filePath.append(file);
+      cout << filePath << endl;
+      InsertFunction(filePath);
+      time_spent = float( clock () - begin_time ) / CLOCKS_PER_SEC;
+      csvFile << storageUse << "," << time_spent << "\n";
+      // cout << storageUse << "," << time_spent << "\n";
     }
-
-    printf("NULL\n");
   }
-  printf("\nWords: %d\n", unrepeatedWords);
+  csvFile.close();
+  closedir(dir);
 }
