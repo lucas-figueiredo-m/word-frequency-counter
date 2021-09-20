@@ -1,0 +1,155 @@
+#include "WordCounter.h"
+
+void WordCounter::InsertIntoList (string fileName) {
+  string line, word, subs;
+  fstream file;
+  u_long i;
+  static string eraseMap(".:;,?!/-_\\()[]{}=\"*@%&=+#\n\r\'\0");
+
+  file.open(fileName);
+
+  if ( file.is_open() ) {
+    while ( getline(file, line) ) {
+      
+      for (i = 0; i < eraseMap.length(); i++) 
+        line.erase(remove(line.begin(), line.end(), eraseMap.at(i)), line.end());
+
+      stringstream stream(line);
+
+      if ( line.length() > 0 && line != " " && line != "" ) {
+        stream >> subs;
+
+        while (stream) {
+          list->Insert(subs);
+          stream >> subs;
+        }
+      }
+    }
+  }
+
+  file.close();
+}
+
+void WordCounter::InsertIntoTrie (string fileName) {
+  string line, word, subs;
+  fstream file;
+  u_long i;
+  static string eraseMap(".:;,?!/-_\\()[]{}=\"*@%&=+#\n\r\'\0");
+
+  file.open(fileName);
+
+  if ( file.is_open() ) {
+    while ( getline(file, line) ) {
+      
+      for (i = 0; i < eraseMap.length(); i++) 
+        line.erase(remove(line.begin(), line.end(), eraseMap.at(i)), line.end());
+
+      stringstream stream(line);
+
+      if ( line.length() > 0 && line != " " && line != "" ) {
+        stream >> subs;
+
+        while (stream) {
+          tr->Insert(subs);
+          stream >> subs;
+        }
+      }
+    }
+  }
+
+  file.close();
+}
+
+void WordCounter::InsertListTime() {
+  struct dirent *entry;
+  string folder("folder/"), filePath;
+  DIR *dir = opendir(folder.c_str());
+  if (dir == NULL)
+    return;
+  
+  fstream csvFile;
+
+  csvFile.open("list_insert.csv", ios::out | ios::trunc);
+  csvFile << "data_size,time_spent" << "\n";
+  const clock_t begin_time = clock();
+  float time_spent;
+
+  while ((entry = readdir(dir)) != NULL) {
+    string file(entry->d_name);
+    if (file.at(0) != '.') {
+      cout << file << endl;
+      filePath.assign(folder);
+      filePath.append(file);
+      cout << filePath << endl;
+      InsertIntoList(filePath);
+      time_spent = float( clock () - begin_time ) / CLOCKS_PER_SEC;
+      csvFile << list->totalWords << "," << time_spent << "\n";
+      cout << list->totalWords << "," << time_spent << "\n";
+    }
+  }
+  csvFile.close();
+  closedir(dir);
+}
+
+void WordCounter::InsertTrieTime() {
+  struct dirent *entry;
+  string folder("folder/"), filePath;
+  DIR *dir = opendir(folder.c_str());
+  if (dir == NULL)
+    return;
+  
+  fstream csvFile;
+
+  csvFile.open("trie_insert.csv", ios::out | ios::trunc);
+  csvFile << "data_size,time_spent" << "\n";
+  const clock_t begin_time = clock();
+  float time_spent;
+
+  while ((entry = readdir(dir)) != NULL) {
+    string file(entry->d_name);
+    if (file.at(0) != '.') {
+      cout << file << endl;
+      filePath.assign(folder);
+      filePath.append(file);
+      cout << filePath << endl;
+      InsertIntoTrie(filePath);
+      time_spent = float( clock () - begin_time ) / CLOCKS_PER_SEC;
+      csvFile << list->totalWords << "," << time_spent << "\n";
+      cout << list->totalWords << "," << time_spent << "\n";
+    }
+  }
+  csvFile.close();
+  closedir(dir);
+}
+
+void WordCounter::OpenFile(string fileName) {
+  fstream csvFile;
+  csvFile.open("teste.csv", ios::out | ios::trunc);
+
+  const clock_t begin_time = clock();
+  InsertIntoList(fileName);
+  float time_spent = float( clock () - begin_time ) / CLOCKS_PER_SEC;
+
+  cout << "Time spent: " << time_spent << endl;
+
+  csvFile << "file_size,time_spent" << "\n";
+  csvFile << list->totalWords << "," << time_spent << "\n";
+
+
+}
+
+WordCounter::WordCounter(string filePath) {
+
+  string pathEnding = filePath.substr( filePath.length() - 4 );
+
+  Hashlist hash(37);
+  Trie trie;
+
+  *list = hash;
+  *tr = trie;
+
+  if ( !pathEnding.compare(".txt") ) {
+    WordCounter::OpenFile(filePath);
+  } else
+    cout << "folder" << endl;
+}

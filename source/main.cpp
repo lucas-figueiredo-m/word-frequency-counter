@@ -10,17 +10,41 @@
 
 using namespace std;
 
+// void display(void (*p)(int num));
+// void print_numbers(int num);
+
+// void display(void (*p)(int num)) {  
+//     for(int i=1;i<=5;i++)  
+//     {  
+//         p(i);  
+//     }  
+// }  
+
+// void print_numbers(int num) {  
+//     cout<<num;  
+// }
+
+// int main() {  
+
+//   printf("The values are :");  
+//   display(print_numbers);  
+//   return 0;  
+// }  
+
 
 int main() {
 
   // list_dir("folder");
 
   string filePath;
-  // filePath = "/Users/lucasfigueiredo/Dropbox/Mestrado DCC/2º Trimestre/AED/Trabalho final/teste.txt";
+  // // filePath = "/Users/lucasfigueiredo/Dropbox/Mestrado DCC/2º Trimestre/AED/Trabalho final/teste.txt";
 
   filePath = getFilePath();
-  // cout << filePath << endl;
+  // // cout << filePath << endl;
   WordCounter Counter(filePath);
+
+  // Counter.InsertListTime();
+  // Counter.InsertTrieTime();
 
 
   // fstream file;
